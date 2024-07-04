@@ -18,6 +18,7 @@ namespace management_cpp
 
     static void prepareData(std::vector<std::vector<Person>> &personsList);
     static Person findByDNI(std::vector<std::vector<Person>> &personsList, const int &dni);
+  //static bool updateRecord(const int &dni, const Person &updatedPerson);
   };
 
   void Management::prepareData(std::vector<std::vector<Person>> &personsList)
@@ -57,7 +58,58 @@ namespace management_cpp
       return Person();
     }
   }
+/*
+  bool Management::updateRecord(const int &dni, const Person &updatedPerson)
+  {
+    try
+    {
+      std::vector<std::vector<Person>> personsList;
+      prepareData(personsList);
 
+      bool updated = false;
+      for (auto &personList : personsList)
+      {
+        for (auto &person : personList)
+        {
+          if (person.dni == dni)
+          {
+            person = updatedPerson;
+            updated = true;
+            break;
+          }
+        }
+        if (updated) break;
+      }
+
+      if (!updated)
+      {
+        std::cerr << "Record not found for DNI: " << dni << std::endl;
+        return false;
+      }
+
+      init::ConfigRead configRead;
+      configRead.Open("config.ini");
+      std::string filename = configRead.GetValue("Database", "filename");
+      configRead.Close();
+
+      std::ofstream outFile(filename, std::ios::binary);
+      for (const auto &personList : personsList)
+      {
+        for (const auto &person : personList)
+        {
+          database_cpp::Database::writePerson(person, outFile);
+        }
+      }
+      outFile.close();
+
+      return true;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }*/
 }
 
 #endif
